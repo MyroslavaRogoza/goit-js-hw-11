@@ -7,9 +7,38 @@ import 'izitoast/dist/css/iziToast.min.css';
 import iconError from '../img/iconError.svg';
 
 const form = document.querySelector('form');
-const input = document.querySelector('.input-img');
+const input = document.querySelector('.user-input');
 const submitBtn = document.querySelector('form button');
 const container = document.querySelector('.gallery');
+
+form.addEventListener('submit', onFormSubmit);
+
+function onFormSubmit(evt) {
+  evt.preventDefault();
+
+  const userData = evt.target.elements.userInput.value;
+
+  const img = new galleryApi();
+  img
+    .getImg(userData)
+    .then(item => {
+      if (item.hits.length === 0) {
+        return iziToast.show({
+          message:
+            'Sorry, there are no images matching your search query. Please try again!',
+          theme: 'dark',
+          messageColor: '#fafafb',
+          backgroundColor: '#ef4040',
+          position: 'topRight',
+          iconUrl: iconError,
+          iconColor: '#fff',
+          maxWidth: '350px',
+        });
+      }
+      return item.hits;
+    })
+    .then(createGallery);
+}
 
 function galleryItemTemplate({
   webformatURL,
@@ -30,24 +59,23 @@ function galleryItemTemplate({
     </a>
 
     <ul class='img-data-container'>
-
     <li class='img-data-item'>
-    <h3>Likes<h3>
+    <h3>Likes</h3>
     <p>${likes}</p>
     </li>
 
     <li class='img-data-item'>
-    <h3>Views<h3>
+    <h3>Views</h3>
     <p>${views}</p>
     </li>
 
     <li class='img-data-item'>
-    <h3>Comments<h3>
+    <h3>Comments</h3>
     <p>${comments}</p>
     </li>
 
     <li class='img-data-item'>
-    <h3>Downloads<h3>
+    <h3>Downloads</h3>
     <p>${downloads}</p>
     </li> 
 
@@ -60,22 +88,23 @@ function createGallery(item) {
   container.innerHTML = markup;
 }
 
-const img = new galleryApi();
-img
-  .getImg('dfjjuhynhuhuh')
-  .then(item => {
-    if (item.hits.length === 0) {
-      return iziToast.show({
-        message:
-          'Sorry, there are no images matching your search query. Please try again!',
-        theme: 'dark',
-        color: '#fafafb',
-        backgroundColor: '#ef4040',
-        position: 'topRight',
-        iconUrl: iconError,
-        iconColor: '#fff',
-      });
-    }
-    return item.hits;
-  })
-  .then(createGallery);
+// const img = new galleryApi();
+// img
+//   .getImg('caiu7ytygtv')
+//   .then(item => {
+//     if (item.hits.length === 0) {
+//       return iziToast.show({
+//         message:
+//           'Sorry, there are no images matching your search query. Please try again!',
+//         theme: 'dark',
+//         messageColor: '#fafafb',
+//         backgroundColor: '#ef4040',
+//         position: 'topRight',
+//         iconUrl: iconError,
+//         iconColor: '#fff',
+//         maxWidth: '350px',
+//       });
+//     }
+//     return item.hits;
+//   })
+//   .then(createGallery);
