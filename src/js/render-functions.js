@@ -50,6 +50,7 @@ function galleryItemTemplate({
   downloads,
 }) {
   return `<li class="gallery-item">
+  <div class='img-container'>
     <a class="gallery-link" href="${largeImageURL}">
       <img
         class="gallery-image"
@@ -57,7 +58,7 @@ function galleryItemTemplate({
         alt="${tags}"
       />
     </a>
-
+</div>
     <ul class='img-data-container'>
     <li class='img-data-item'>
     <h3>Likes</h3>
