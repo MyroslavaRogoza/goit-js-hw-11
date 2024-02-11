@@ -1,8 +1,10 @@
 import { galleryApi } from './pixabay-api.js';
 
 import iziToast from 'izitoast';
-
 import 'izitoast/dist/css/iziToast.min.css';
+
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 import iconError from '../img/iconError.svg';
 
@@ -12,18 +14,27 @@ const submitBtn = document.querySelector('form button');
 const container = document.querySelector('.gallery');
 
 form.addEventListener('submit', onFormSubmit);
+let item = new SimpleLightbox('.gallery-link ', {
+  sourceAttr: 'href',
+  captions: true,
+  captionPosition: 'bottom',
+  captionSelector: 'img',
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+item.refresh();
 
 function onFormSubmit(evt) {
   evt.preventDefault();
 
-  const userData = evt.target.elements.userInput.value;
+  const userData = evt.target.elements.userInput.value.trim();
 
-  const img = new galleryApi();
-  img
+  const galleryItem = new galleryApi();
+  galleryItem
     .getImg(userData)
     .then(item => {
       if (item.hits.length === 0) {
-        return iziToast.show({
+        iziToast.show({
           message:
             'Sorry, there are no images matching your search query. Please try again!',
           theme: 'dark',
@@ -38,6 +49,8 @@ function onFormSubmit(evt) {
       return item.hits;
     })
     .then(createGallery);
+  item.refresh();
+  e.target.reset();
 }
 
 function galleryItemTemplate({
@@ -87,25 +100,14 @@ function galleryItemTemplate({
 function createGallery(item) {
   const markup = item.map(galleryItemTemplate).join('');
   container.innerHTML = markup;
-}
+  let lightBoxInstance = new SimpleLightbox('.gallery-link ', {
+    // sourceAttr: 'href',
 
-// const img = new galleryApi();
-// img
-//   .getImg('caiu7ytygtv')
-//   .then(item => {
-//     if (item.hits.length === 0) {
-//       return iziToast.show({
-//         message:
-//           'Sorry, there are no images matching your search query. Please try again!',
-//         theme: 'dark',
-//         messageColor: '#fafafb',
-//         backgroundColor: '#ef4040',
-//         position: 'topRight',
-//         iconUrl: iconError,
-//         iconColor: '#fff',
-//         maxWidth: '350px',
-//       });
-//     }
-//     return item.hits;
-//   })
-//   .then(createGallery);
+    captions: true,
+    captionPosition: 'bottom',
+    captionSelector: 'img',
+    captionsData: 'alt',
+    captionDelay: 250,
+  });
+  lightBoxInstance.refresh();
+}

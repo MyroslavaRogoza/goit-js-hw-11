@@ -2,9 +2,13 @@
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
-  margin: 30px auto;
+  margin: auto auto;
   max-width: 1128px;
   padding: 0;
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 .gallery-item {
   flex-basis: calc((100% - 48px) / 3);
@@ -34,7 +38,15 @@
   object-fit: cover;
 }
 .img-container {
-  padding: 22%; 
+  padding: 22%;
   position: relative;
   overflow: hidden;
+}
+.form {
+  display: flex;
+  gap: 8px;
+  position: absolute;
+  /* top: 50%; */
+  left: 50%;
+  transform: translate(-50%, 0);
 }

@@ -1,8 +1,10 @@
 export class galleryApi{
-  constructor(){}
+  constructor(){
+    this.url = 'https://pixabay.com/api/?';
+  }
 
   getImg(userInput){
-    const url = 'https://pixabay.com/api/?';
+    // const url = 'https://pixabay.com/api/?';
 
     const params = new URLSearchParams({
       key: '42280899-738d1c20fb5924f395bcd6368',
@@ -11,7 +13,7 @@ export class galleryApi{
       orientation: 'horizontal',
       safesearch: 'true',
     });
-    return fetch(url + params).then(data => {
+    return fetch(this.url + params).then(data => {
       if (!data.ok) {
         throw new Error(data.status);
       }
