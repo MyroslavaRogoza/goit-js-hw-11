@@ -1,11 +1,9 @@
-export class galleryApi{
-  constructor(){
+const loader = document.querySelector('.loader');
+export class galleryApi {
+  constructor() {
     this.url = 'https://pixabay.com/api/?';
   }
-
-  getImg(userInput){
-    // const url = 'https://pixabay.com/api/?';
-
+  getDataImg(userInput) {
     const params = new URLSearchParams({
       key: '42280899-738d1c20fb5924f395bcd6368',
       q: `${userInput}`,
@@ -15,59 +13,11 @@ export class galleryApi{
     });
     return fetch(this.url + params).then(data => {
       if (!data.ok) {
+        loader.classList.add('loader-hide');
         throw new Error(data.status);
       }
+      loader.classList.add('loader-hide');
       return data.json();
-  });
-};}
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-form.addEventListener('submit', onFormSubmit);
-function onFormSubmit(evt) {
-  evt.preventDefault();
-  const userInput = evt.target.elements.inputImg.value;
-  const url = 'https://pixabay.com/api/?';
-
-  const params = new URLSearchParams({
-    key: '42280899-738d1c20fb5924f395bcd6368',
-    q: `${userInput}`,
-    image_type: 'photo',
-    orientation: 'horizontal',
-    safesearch: 'true',
-  });
-
-  return fetch(url + `${params}`).then(data => {
-    if (!data.ok) {
-      throw new Error(data.status);
-    }
-   // if (data.hits.length === 0) {
-     
-      // return iziToast.show({
-      //   title:
-      //     'Sorry, there are no images matching your search query. Please try again!',
-      //   theme: 'light',
-      //   titleColor: '#fafafb',
-      //   backgroundColor: '#ef4040',
-      //   position: 'topRight',
-      // });
-      
-    //} 
-    console.log(data);
-    return data.json;
-  }).then(data => console.log(data));
-
-
+    });
+  }
 }
-*/

@@ -9,29 +9,18 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import iconError from '../img/iconError.svg';
 
 const form = document.querySelector('form');
-const input = document.querySelector('.user-input');
-const submitBtn = document.querySelector('form button');
 const container = document.querySelector('.gallery');
+const loader = document.querySelector('.loader');
 
 form.addEventListener('submit', onFormSubmit);
-let item = new SimpleLightbox('.gallery-link ', {
-  sourceAttr: 'href',
-  captions: true,
-  captionPosition: 'bottom',
-  captionSelector: 'img',
-  captionsData: 'alt',
-  captionDelay: 250,
-});
-item.refresh();
-
 function onFormSubmit(evt) {
   evt.preventDefault();
 
   const userData = evt.target.elements.userInput.value.trim();
-
+  loader.classList.remove('loader-hide');
   const galleryItem = new galleryApi();
   galleryItem
-    .getImg(userData)
+    .getDataImg(userData)
     .then(item => {
       if (item.hits.length === 0) {
         iziToast.show({
@@ -45,12 +34,12 @@ function onFormSubmit(evt) {
           iconColor: '#fff',
           maxWidth: '350px',
         });
+        container.innerHTML = '';
       }
       return item.hits;
     })
     .then(createGallery);
-  item.refresh();
-  e.target.reset();
+  evt.target.reset();
 }
 
 function galleryItemTemplate({
@@ -100,10 +89,8 @@ function galleryItemTemplate({
 function createGallery(item) {
   const markup = item.map(galleryItemTemplate).join('');
   container.innerHTML = markup;
-  let lightBoxInstance = new SimpleLightbox('.gallery-link ', {
-    // sourceAttr: 'href',
 
-    captions: true,
+  let lightBoxInstance = new SimpleLightbox('.gallery-link ', {
     captionPosition: 'bottom',
     captionSelector: 'img',
     captionsData: 'alt',
